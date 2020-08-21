@@ -12,13 +12,21 @@ pipeline {
       parallel {
         stage('Test') {
           steps {
-            ansiblePlaybook(playbook: 'ansible/roles/java-app-setup.yml', inventory: 'ansible/hosts', limit: 'localhost')
+            ansiblePlaybook(playbook: 'ansible/java-app-setup.yml', inventory: 'ansible/hosts', limit: 'localhost')
+            sh 'cd '
           }
         }
 
-        stage('Kill Current Test') {
+        stage('Functional Testing') {
           steps {
-            ansiblePlaybook(playbook: 'ansible/roles/java-app-reset.yml', inventory: 'ansible/hosts', limit: 'localhost')
+            sh 'mvn test "-Dtestcase/test=Test.Runner"'
+            archiveArtifacts 'testcase/target/surefire-reports/*html'
+          }
+        }
+
+        stage('Stop App in Test Server') {
+          steps {
+            ansiblePlaybook(playbook: 'ansible/java-app-resset.yml', inventory: 'ansible/hosts', limit: 'localhost')
           }
         }
 
@@ -27,9 +35,9 @@ pipeline {
 
     stage('Deploy') {
       steps {
-        ansiblePlaybook(playbook: 'ansible/roles/java-app-setup.yml', inventory: 'ansible/hosts', limit: 'production')
+        ansiblePlaybook(playbook: 'ansible/java-app-setup.yml', inventory: 'ansible/hosts', limit: 'production')
         input 'Finished using mvn-app?'
-        ansiblePlaybook(playbook: 'ansible/roles/java-app-reset.yml', inventory: 'ansible/hosts', limit: 'production')
+        ansiblePlaybook(playbook: 'ansible/java-app-reset.yml', inventory: 'ansible/hosts', limit: 'production')
       }
     }
 
