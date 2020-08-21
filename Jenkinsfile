@@ -10,7 +10,7 @@ pipeline {
 
     stage('Test') {
       steps {
-        ansiblePlaybook(playbook: 'ansible/java-app-setup.yml', inventory: 'ansible/hosts', limit: 'localhost', sudo: true, sudoUser: 'sushan', become: true, becomeUser: 'sushan')
+        ansiblePlaybook(playbook: 'ansible/java-app-setup.yml', inventory: 'ansible/hosts', limit: 'localhost', sudo: true, sudoUser: 'sushan')
         sh 'mvn test "-Dtestcase/test=Test.Runner"'
         archiveArtifacts 'testcase/target/surefire-reports/*html'
         ansiblePlaybook(playbook: 'ansible/java-app-reset.yml', inventory: 'ansible/hosts', limit: 'localhost', become: true, becomeUser: 'sushan', sudo: true, sudoUser: 'sushan')
