@@ -1,0 +1,11 @@
+---
+- name: Run User setup role
+  hosts: all
+  become: yes
+  connection: ssh
+#  become_method: "{{ deploy_user }}"
+#  vars:
+#    user_home: /home/{{ deploy_user }}
+#    deploy_dir: "{{ user_home }}/deploy"
+  roles:
+    - java-kill-app

@@ -1,0 +1,4 @@
+localhost ansible_connection=local ansible_user=sushan
+
+[production]
+192.168.11.100 ansible_user=sushan

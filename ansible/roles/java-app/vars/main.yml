@@ -1,0 +1,17 @@
+---
+# vars file for user-management
+default_user_password: root123
+deploy_user: mockup
+deploy_password: mockup123
+  
+# vars file for mysql
+db_name: mockup_db
+host: localhost 
+db_user: mockup
+db_pw: mockup123
+
+
+#mysql_root_username: root
+#mysql_root_password: root
+#deploy_dir: /tmp
+

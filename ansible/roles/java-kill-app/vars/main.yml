@@ -1,0 +1,5 @@
+---
+# vars file for java-kill-app
+deploy_user: mockup
+db_user: mockup
+db_name: mockup_db
