@@ -1,0 +1,20 @@
+19:05:39.621 skipping bootstrap configuration: could not find or read file: classpath:karate-config.js
+19:05:40.149 request:
+1 > GET http://localhost:4567/role/12345
+1 > Accept-Encoding: gzip,deflate
+1 > Connection: Keep-Alive
+1 > Host: localhost:4567
+1 > User-Agent: Apache-HttpClient/4.5.5 (Java/1.8.0_265)
+
+19:05:40.206 response time in milliseconds: 53.53
+1 < 200
+1 < Content-Type: text/plain
+1 < Date: Thu, 20 Aug 2020 13:20:40 GMT
+1 < Server: Jetty(9.4.z-SNAPSHOT)
+1 < Transfer-Encoding: chunked
+"It is a number"
+
+
+illiseconds for URL: http://localhost:4567/role/12345
+19:01:06.506 http request failed: 
+org.apache.http.conn.HttpHostConnectException: Connect to localhost:4567 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused (Connection refused)

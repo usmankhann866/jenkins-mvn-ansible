@@ -1,0 +1,24 @@
+19:05:40.676 skipping bootstrap configuration: could not find or read file: classpath:karate-config.js
+19:05:40.682 request:
+1 > GET http://localhost:4567/role/Sanjeev
+1 > Accept-Encoding: gzip,deflate
+1 > Connection: Keep-Alive
+1 > Host: localhost:4567
+1 > User-Agent: Apache-HttpClient/4.5.5 (Java/1.8.0_265)
+
+19:05:40.691 response time in milliseconds: 6.84
+1 < 500
+1 < Content-Type: text/html;charset=utf-8
+1 < Date: Thu, 20 Aug 2020 13:20:40 GMT
+1 < Server: Jetty(9.4.z-SNAPSHOT)
+1 < Transfer-Encoding: chunked
+<html><body><h2>500 Internal Server Error</h2></body></html>
+
+19:05:40.703 assertion failed: path: , actual: '<html>
+<body>
+<h2>500 Internal Server Error</h2>
+</body>
+</html>
+', expected: '"hello Sanjeev"', reason: not equal
+
+ Connection refused (Connection refused)
