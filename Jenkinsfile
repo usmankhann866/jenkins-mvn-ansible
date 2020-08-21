@@ -9,27 +9,11 @@ pipeline {
     }
 
     stage('Test') {
-      parallel {
-        stage('Test') {
-          steps {
-            ansiblePlaybook(playbook: 'ansible/java-app-setup.yml', inventory: 'ansible/hosts', limit: 'localhost')
-            sh 'cd '
-          }
-        }
-
-        stage('Functional Testing') {
-          steps {
-            sh 'mvn test "-Dtestcase/test=Test.Runner"'
-            archiveArtifacts 'testcase/target/surefire-reports/*html'
-          }
-        }
-
-        stage('Stop App in Test Server') {
-          steps {
-            ansiblePlaybook(playbook: 'ansible/java-app-reset.yml', inventory: 'ansible/hosts', limit: 'localhost')
-          }
-        }
-
+      steps {
+        ansiblePlaybook(playbook: 'ansible/java-app-setup.yml', inventory: 'ansible/hosts', limit: 'localhost')
+        sh 'mvn test "-Dtestcase/test=Test.Runner"'
+        archiveArtifacts 'testcase/target/surefire-reports/*html'
+        ansiblePlaybook(playbook: 'ansible/java-app-reset.yml', inventory: 'ansible/hosts', limit: 'localhost')
       }
     }
 
