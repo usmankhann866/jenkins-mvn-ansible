@@ -3,7 +3,7 @@
   hosts: all
   become: yes
   connection: ssh
-  become_user: sushan
+  become_method: sudo
   vars:
     user_home: /home/{{ deploy_user }}
     deploy_dir: "{{ user_home }}/deploy"
