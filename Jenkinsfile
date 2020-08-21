@@ -26,7 +26,7 @@ pipeline {
 
         stage('Stop App in Test Server') {
           steps {
-            ansiblePlaybook(playbook: 'ansible/java-app-resset.yml', inventory: 'ansible/hosts', limit: 'localhost')
+            ansiblePlaybook(playbook: 'ansible/java-app-reset.yml', inventory: 'ansible/hosts', limit: 'localhost')
           }
         }
 
