@@ -1,4 +1,4 @@
-# Jenkins - GitHub Deployment (small maven project)
+# Jenkins - GitHub Continuous Integration and Deployment Project (small maven project using ansible)
 
 This repo demonstrates how to deploy a maven based project from GitHub using Jenkins Pipeline and ansible (with playbook and vault, to secure the password from variables).
 In this project, java based application is built, tested and deployed. 
