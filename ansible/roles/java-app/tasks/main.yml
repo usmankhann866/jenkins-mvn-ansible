@@ -9,11 +9,13 @@
 
 ## This Tasks Creates a deployment user 
 - name:  Add Deployment User
+  vars:
+    - user_pass: "{{ default_user_password }}"
   user:
     name: "{{ deploy_user }}"
     state: present
-#    update_password: always
-    password: "{{ default_user_password | password_hash('sha512','aes512') }}"
+#    password: "{{ default_user_password | password_hash('sha512','aes512') }}"
+    password: "{{ user_pass | password_hash('sha512') }}"
     shell: /bin/bash
     update_password: on_create
   tags: add_new_user
