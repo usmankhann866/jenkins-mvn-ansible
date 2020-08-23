@@ -5,11 +5,13 @@
   ignore_errors: yes
   shell: "ps -few | grep test-1.0-SNAPSHOT-jar-with-dependencies.jar | grep java | awk '{print $2}'"
   register: running_processes
+  tags: kill_app
 
 - name: Kill running processes
   ignore_errors: yes
   shell: "kill {{ item }}"
   with_items: "{{ running_processes.stdout_lines }}"
+  tags: kill_app
 
 - wait_for:
     path: "/proc/{{ item }}/status"
@@ -17,11 +19,13 @@
   with_items: "{{ running_processes.stdout_lines }}"
   ignore_errors: yes
   register: java_app_processes
+  tags: kill_app
 
 - name: Force kill stuck processes
   ignore_errors: yes
   shell: "kill -9 {{ item }}"
   with_items: "{{ java_app_processes.results | select('failed') | map(attribute='item') | list }}"
+  tags: kill_app
 
 
 ## This task is to delete the deployment user
@@ -30,15 +34,16 @@
     name: "{{ deploy_user }}"
     state: absent
     remove: yes
-  tags: remove_user   
+  tags: remove_deploy_user   
 
 ## This tasks deletes DB user created 
 - name: Delete DB user
   mysql_user:
     name: "{{ db_user }}"
     state: absent
-  tags: remove_user
+  tags: remove_db_user
 
+## This tasks deletes DB created 
 - name: Delete Database
   mysql_db:
     name: "{{ db_name }}"

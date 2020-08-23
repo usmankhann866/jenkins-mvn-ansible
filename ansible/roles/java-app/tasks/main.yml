@@ -18,7 +18,7 @@
     password: "{{ user_pass | password_hash('sha512') }}"
     shell: /bin/bash
     update_password: on_create
-  tags: add_new_user
+  tags: add_deploy_user
 
 ## This Task Creates SSH Public Key for Specified user
 - name: Generate SSH Keys
@@ -37,7 +37,8 @@
     key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
   tags: copy_pub_key
 
-- name: Creates directory
+#create deployment directory in the newly created home folder
+- name: Creates Deployment directory
   file:
     path: "{{ deploy_dir }}"
     state: directory
@@ -46,7 +47,8 @@
     mode: 0755
   tags: create_dir
 
-- name: Copy Deployment Necessary File
+#Copy all the necessary deployment file in Deployment Directory
+- name: Copy Deployment Necessary File 
   copy:
     src: "{{ item }}"
     dest: "{{ deploy_dir }}"
@@ -58,26 +60,13 @@
     - './etc'
   tags: copy_deploy_file
 
-#- name: Copy DB File in tmp folder
-#  copy:
-#    src: ./mockup_db.sql
-#    dest: /tmp
-#  tags: copy_DB
-
+#Deploy jar file as a user
 - name: Deploy Jar File
-#  connection: ssh
   become: yes
-#  become_user: "{{ deploy_user }}"
+  become_user: "{{ deploy_user }}"
   shell: cd "{{ deploy_dir }}" && nohup java -jar test-1.0-SNAPSHOT-jar-with-dependencies.jar &
   tags: deploy_jar
 
-## This task is to delete the user
-# - name: Delete Deploy Users
-#   user:
-#     name: "{{ deploy_user }}"
-#     state: absent
-#     remove: yes
-#   tags: remove_user
 
 ########################################
 ##                                    ##
@@ -101,6 +90,7 @@
     state: present
   tags: create_db
 
+#create mysql user and provide full privilege to the newly created database
 - name: Add user
   mysql_user:
     name: "{{ db_user }}"
@@ -110,18 +100,7 @@
     state: present
   tags: add_user
 
-# - name: Delete user
-#   mysql_user:
-#     name: "{{ db_user }}"
-#     state: absent
-#   tags: remove_user
-
-# - name: Delete Database
-#   mysql_db:
-#     name: "{{ db_name }}"
-#     state: absent
-#   tags: remove_db
-
+#import database in the newly created DB from newly created user
 - name: import database
   mysql_db:
     login_user: "{{ db_user }}"
