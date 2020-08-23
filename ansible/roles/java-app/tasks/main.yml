@@ -55,7 +55,7 @@
   with_items: 
     - './mockup_db.sql'
     - '/tmp/test-1.0-SNAPSHOT-jar-with-dependencies.jar'
-    - '../etc'
+    - './etc'
   tags: copy_deploy_file
 
 #- name: Copy DB File in tmp folder
@@ -67,7 +67,7 @@
 - name: Deploy Jar File
 #  connection: ssh
   become: yes
-  become_user: "{{ deploy_user }}"
+#  become_user: "{{ deploy_user }}"
   shell: cd "{{ deploy_dir }}" && nohup java -jar test-1.0-SNAPSHOT-jar-with-dependencies.jar &
   tags: deploy_jar
 

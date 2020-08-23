@@ -5,7 +5,7 @@
   connection: ssh
   become_method: sudo
   vars:
-    user_home: "/home/{{ deploy_user }}"
+    user_home: /home/{{ deploy_user }}
     deploy_dir: "{{ user_home }}/deploy"
   roles:
     - java-app

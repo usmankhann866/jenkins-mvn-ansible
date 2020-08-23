@@ -4,7 +4,9 @@
   become: yes
   become_method: sudo
   connection: ssh
-#  become_method: "{{ deploy_user }}"
+  vars_files:
+    - "./roles/java-app/vars/main.yml"
+    - "./java-app-setup.yml"     
 #  vars:
 #    user_home: /home/{{ deploy_user }}
 #    deploy_dir: "{{ user_home }}/deploy"
