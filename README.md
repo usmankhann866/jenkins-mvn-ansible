@@ -1,19 +1,31 @@
 # Jenkins - GitHub Deployment (small maven project)
 
-This repo demonstrates how to deploy a maven based project from GitHub using Jenkins Pipeline and ansible.
-In this project, maven based application is built, tested and deployed.
+This repo demonstrates how to deploy a maven based project from GitHub using Jenkins Pipeline and ansible (with playbook and vault, to secure the password from variables).
+In this project, java based application is built, tested and deployed. 
 See the Jenkinsfile for the exact Pipeline.
+Basic Jenkins and ansible knowledge is required to understand this whole devops flow.
 
 Prerequisite
 ------------
-1. Ubuntu server, at least version(java 1.8, mysql 5.6), python-mysqldb(mysql python connector).
-2. Jenkins, maven, ansible should be installed.
-2. Provision Managent is handled by ansible including the deployment.
+1. Two Ubuntu server 16.04, one for test(staging) and other for depoyment(production)
+2. java 1.8, mysql 5.6, python-mysqldb(mysql python connector) in both server. 
+3. Jenkins, maven, ansible should be installed on one of the server.
+
+# Setup process for Jenkins
+1) Install Jenkins and add required plugins like (blueocean, github, pipeline, ansible).
+2) Configure Jenkins global tool and add ansible and maven as a global tool. 
+2) Setup sudo passwordless user access in both staging and production server and make passwordless ssh connection between those two passwordless user, this is needed for ansible-playbook. 
+3) In Jenkins server, create a node in local server which has access to passwordless user. Then from Jenkinsfile (pipeline) we will tell it to execute the whole Job from the newly created node. This has to be done because I did not want to give the sudo privilege to Jenkins user and run ansible-playbook. 
+
+# Setup process for Ansible
+1) Two roles are created for deploying the app and killing the app.
+2) Both servers will have identical setup because we are deploying first in staging server and if all the build, testing is okay in staging server then we will proceed to the deployment.
+3)
 
 Requirements
 ------------
 1. Create a Multibranch Pipeline (or use Blue Ocean) within Jenkins that references this repository.
-2. Pipeline will then instructs Jenkins to proceed through build, test and deploy phase.
+2. Pipeline will then instructs Jenkins to proceed through build, test and deploy phase using Jenkinsfile.
 
 
 How it Works
@@ -40,8 +52,8 @@ The Jenkins pipeline has 3 stages: Build, Test and Deploy.
 Ansible Roles and its task
 ========
 Ansible helps in automated deployment. 
-Two Roles are used i.e mysql and user-management which is found under ansible/roles/.
-* mysql role have a tasks to add_user, create_db, delete_user, import_db, mysql_status, remove_db.
+Two Roles are used i.e java-app and java-kill-app which is found under ansible/roles/.
+* java role have a tasks to add_new_user, add_user, copy_deploy_file, copy_pub_key, create_db, create_dir, deploy_jar, generate_ssh_keys, import_db, mysql_status
 * user-management role have a task to create add_new_user, copy_pub_key, create_dir, generate_ssh_keys, remove_user.
 
 Role Variables
