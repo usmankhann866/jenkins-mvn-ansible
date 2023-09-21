@@ -9,7 +9,6 @@ pipeline {
     stage('Build') {
       steps {
 	sh 'mvn clean install'
-        sh 'cp ./target/test-1.0-SNAPSHOT-jar-with-dependencies.jar /tmp'
       }
     }
 
